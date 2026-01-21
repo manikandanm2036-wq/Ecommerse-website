@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - MyShop</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Buy Now button styles */
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-add-cart {
+            flex: 1;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+        
+        .btn-add-cart:hover {
+            background: #2980b9;
+        }
+        
+        .btn-buy-now {
+            flex: 1;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-buy-now:hover {
+            background: linear-gradient(135deg, #ff5252 0%, #ff3838 100%);
+            transform: translateY(-2px);
+        }
+        
+        /* Search and filter styles */
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+        
+        .search-box {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box:focus {
+            border-color: #6a11cb;
+        }
+        
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        
+        .no-products {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            margin: 8px 0;
+            line-height: 1.4;
+            min-height: 40px;
+        }
+        
+        /* Make products visible immediately */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #2d3436;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-cart"></i> MyShop
+            </a>
+            
+            <div class="nav-menu">
+                <a href="index.html">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="products.html" class="active">
+                    <i class="fas fa-store"></i> Products
+                </a>
+                <a href="cart.html">
+                    <i class="fas fa-shopping-bag"></i> Cart 
+                    <span class="cart-badge" id="cart-count">0</span>
+                </a>
+                <a href="login.html">
+                    <i class="fas fa-user"></i> Login
+                </a>
+            </div>
+            
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Products Header -->
+    <section class="hero" style="padding: 60px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <div class="container">
+            <h1 style="color: white;">Our Products</h1>
+            <p class="subtitle" style="color: rgba(255,255,255,0.9);">Discover our wide range of products</p>
+            
+            <div class="search-filter">
+                <input type="text" id="search-input" placeholder="Search products..." class="search-box">
+                <select id="category-filter" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Home">Home & Kitchen</option>
+                    <option value="Sports">Sports</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid - HARDCODED AS FALLBACK -->
+    <section class="featured-products" style="padding: 60px 0;">
+        <div class="container">
+            <div class="products-grid" id="products-container">
+                <!-- Products will load here via JavaScript -->
+                <!-- If JavaScript fails, show these hardcoded products -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop" alt="Wireless Headphones">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Electronics</span>
+                        <h3 class="product-title">Wireless Headphones</h3>
+                        <p class="product-description">Noise cancelling premium headphones with 30hr battery</p>
+                        <div class="product-price">$49.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart(1, 'Wireless Headphones', 49.99)">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy-now" onclick="buyNow(1, 'Wireless Headphones', 49.99)">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop" alt="Smart Watch">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Electronics</span>
+                        <h3 class="product-title">Smart Watch</h3>
+                        <p class="product-description">Fitness tracker with heart rate monitor and GPS</p>
+                        <div class="product-price">$89.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart(2, 'Smart Watch', 89.99)">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy-now" onclick="buyNow(2, 'Smart Watch', 89.99)">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop" alt="Laptop Backpack">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Fashion</span>
+                        <h3 class="product-title">Laptop Backpack</h3>
+                        <p class="product-description">Waterproof laptop backpack with USB charging port</p>
+                        <div class="product-price">$29.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart(3, 'Laptop Backpack', 29.99)">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy-now" onclick="buyNow(3, 'Laptop Backpack', 29.99)">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300&h=200&fit=crop" alt="Bluetooth Speaker">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Electronics</span>
+                        <h3 class="product-title">Bluetooth Speaker</h3>
+                        <p class="product-description">Portable speaker with 10-hour battery life</p>
+                        <div class="product-price">$39.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart(4, 'Bluetooth Speaker', 39.99)">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy-now" onclick="buyNow(4, 'Bluetooth Speaker', 39.99)">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-shopping-cart"></i> MyShop</h3>
+                    <p>Your trusted online shopping partner since 2024</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html">Cart</a>
+                    <a href="login.html">Login</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@myshop.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MyShop. All rights reserved. | Made with <i class="fas fa-heart"></i> by Student</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Product Database
+        const allProducts = [
+            { 
+                id: 1, 
+                name: "Wireless Headphones", 
+                price: 49.99, 
+                category: "Electronics", 
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop",
+                description: "Noise cancelling premium headphones with 30hr battery"
+            },
+            { 
+                id: 2, 
+                name: "Smart Watch", 
+                price: 89.99, 
+                category: "Electronics", 
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop",
+                description: "Fitness tracker with heart rate monitor and GPS"
+            },
+            { 
+                id: 3, 
+                name: "Laptop Backpack", 
+                price: 29.99, 
+                category: "Fashion", 
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop",
+                description: "Waterproof laptop backpack with USB charging port"
+            },
+            { 
+                id: 4, 
+                name: "Bluetooth Speaker", 
+                price: 39.99, 
+                category: "Electronics", 
+                image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300&h=200&fit=crop",
+                description: "Portable speaker with 10-hour battery life"
+            },
+            { 
+                id: 5, 
+                name: "Running Shoes", 
+                price: 59.99, 
+                category: "Sports", 
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop",
+                description: "Comfortable running shoes with air cushioning"
+            },
+            { 
+                id: 6, 
+                name: "Coffee Maker", 
+                price: 79.99, 
+                category: "Home", 
+                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&h=200&fit=crop",
+                description: "Automatic coffee machine with programmable timer"
+            },
+            { 
+                id: 7, 
+                name: "Gaming Mouse", 
+                price: 34.99, 
+                category: "Electronics", 
+                image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=300&h=200&fit=crop",
+                description: "RGB gaming mouse with 16000 DPI"
+            },
+            { 
+                id: 8, 
+                name: "Desk Lamp", 
+                price: 24.99, 
+                category: "Home", 
+                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&h=200&fit=crop",
+                description: "LED desk lamp with adjustable brightness"
+            }
+        ];
+
+        // Load products on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Page loaded, loading products...");
+            updateCartCount();
+            displayProducts(allProducts);
+            setupFilters();
+        });
+
+        // Display products
+        function displayProducts(products) {
+            const container = document.getElementById('products-container');
+            if (!container) {
+                console.error("Products container not found!");
+                return;
+            }
+            
+            console.log("Displaying", products.length, "products");
+            
+            if (products.length === 0) {
+                container.innerHTML = '<p class="no-products">No products found. Try a different search.</p>';
+                return;
+            }
+            
+            // Clear only if we're not using hardcoded fallback
+            if (products.length > 4) {
+                container.innerHTML = '';
+            } else if (container.children.length > 4) {
+                container.innerHTML = '';
+            }
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${product.category}</span>
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price})">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy-now" onclick="buyNow(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price})">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+
+        // Setup search and filter
+        function setupFilters() {
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+            
+            if (!searchInput || !categoryFilter) {
+                console.log("Search/filter elements not found");
+                return;
+            }
+            
+            function filterProducts() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const selectedCategory = categoryFilter.value;
+                
+                console.log("Filtering:", searchTerm, selectedCategory);
+                
+                let filtered = allProducts;
+                
+                // Filter by category
+                if (selectedCategory) {
+                    filtered = filtered.filter(product => product.category === selectedCategory);
+                }
+                
+                // Filter by search term
+                if (searchTerm) {
+                    filtered = filtered.filter(product => 
+                        product.name.toLowerCase().includes(searchTerm) ||
+                        product.category.toLowerCase().includes(searchTerm) ||
+                        product.description.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                console.log("Filtered to", filtered.length, "products");
+                displayProducts(filtered);
+            }
+            
+            searchInput.addEventListener('input', filterProducts);
+            categoryFilter.addEventListener('change', filterProducts);
+        }
+        
+        // Update cart count from localStorage
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                try {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+                    cartCountElement.textContent = totalItems;
+                    console.log("Cart updated:", totalItems, "items");
+                } catch (error) {
+                    console.error("Cart update error:", error);
+                    cartCountElement.textContent = '0';
+                }
+            }
+        }
+        
+        // Make functions globally available
+        window.updateCartCount = updateCartCount;
+        
+        // Check if script.js functions exist, if not define them here
+        if (typeof addToCart === 'undefined') {
+            window.addToCart = function(productId, productName, productPrice) {
+                alert(`Added to cart: ${productName} - $${productPrice}`);
+                // Update cart count
+                updateCartCount();
+            };
+        }
+        
+        if (typeof buyNow === 'undefined') {
+            window.buyNow = function(productId, productName, productPrice) {
+                const confirmBuy = confirm(`Buy "${productName}" for $${productPrice}?`);
+                if (confirmBuy) {
+                    alert(`Order placed for ${productName}! Order ID: ORD-${Date.now()}`);
+                }
+            };
+        }
+    </script>
+</body>
+</html>

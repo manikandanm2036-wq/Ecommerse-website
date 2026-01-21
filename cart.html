@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - MyShop</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Cart Page Styles */
+        .cart-page {
+            padding: 60px 0;
+            min-height: 70vh;
+        }
+        
+        .cart-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .cart-title {
+            font-size: 2.5rem;
+            color: #2d3436;
+        }
+        
+        .continue-shopping {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+        
+        /* Cart Items */
+        #cart-items {
+            margin-bottom: 40px;
+        }
+        
+        .cart-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .cart-item-info h4 {
+            margin-bottom: 5px;
+            color: #2d3436;
+            font-size: 18px;
+        }
+        
+        .cart-item-price {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: #f8f9fa;
+        }
+        
+        .quantity {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .item-total {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 16px;
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        .remove-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .remove-btn:hover {
+            background: #ff3742;
+        }
+        
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .empty-cart i {
+            color: #ddd;
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .empty-cart h3 {
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+        
+        .empty-cart p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* Cart Summary */
+        .cart-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .summary-title {
+            font-size: 1.5rem;
+            color: #2d3436;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f2f6;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f2f6;
+        }
+        
+        .summary-row.total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-bottom: none;
+            padding-top: 15px;
+            color: #e74c3c;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .secure-payment {
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-item {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .cart-item-controls {
+                justify-content: center;
+            }
+            
+            .item-total {
+                text-align: center;
+            }
+            
+            .cart-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-cart"></i> MyShop
+            </a>
+            
+            <div class="nav-menu">
+                <a href="index.html">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="products.html">
+                    <i class="fas fa-store"></i> Products
+                </a>
+                <a href="cart.html" class="active">
+                    <i class="fas fa-shopping-bag"></i> Cart 
+                    <span class="cart-badge" id="cart-count">0</span>
+                </a>
+                <a href="login.html">
+                    <i class="fas fa-user"></i> Login
+                </a>
+            </div>
+            
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Cart Page -->
+    <section class="cart-page">
+        <div class="cart-container">
+            <div class="cart-header">
+                <h1 class="cart-title">Your Shopping Cart</h1>
+                <a href="products.html" class="continue-shopping">
+                    <i class="fas fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+            
+            <div id="cart-items">
+                <!-- Cart items loaded by JavaScript -->
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Looks like you haven't added any items to your cart yet.</p>
+                    <a href="products.html" class="btn btn-primary" style="padding: 10px 25px;">
+                        <i class="fas fa-store"></i> Browse Products
+                    </a>
+                </div>
+            </div>
+            
+            <div class="cart-summary">
+                <h2 class="summary-title">Order Summary</h2>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>$<span id="subtotal">0.00</span></span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>FREE</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Tax (8%)</span>
+                    <span>$<span id="tax">0.00</span></span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>$<span id="cart-total">0.00</span></span>
+                </div>
+                
+                <button class="checkout-btn" onclick="checkout()">
+                    <i class="fas fa-lock"></i> Proceed to Checkout
+                </button>
+                
+                <p class="secure-payment">
+                    <i class="fas fa-lock"></i> Secure checkout
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-shopping-cart"></i> MyShop</h3>
+                    <p>Your trusted online shopping partner since 2024</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html">Cart</a>
+                    <a href="login.html">Login</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@myshop.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MyShop. All rights reserved. | Made with <i class="fas fa-heart"></i> by Student</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Load cart when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartPage();
+            updateOrderSummary();
+            
+            // Update summary every second
+            setInterval(updateOrderSummary, 1000);
+        });
+        
+        // Update order summary
+        function updateOrderSummary() {
+            try {
+                // Get cart from localStorage
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                // Calculate totals
+                let subtotal = 0;
+                cart.forEach(item => {
+                    subtotal += (item.price || 0) * (item.quantity || 1);
+                });
+                
+                const tax = subtotal * 0.08;
+                const total = subtotal + tax;
+                
+                // Update display
+                document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+                document.getElementById('tax').textContent = tax.toFixed(2);
+                document.getElementById('cart-total').textContent = total.toFixed(2);
+            } catch (error) {
+                console.log("Error updating summary:", error);
+            }
+        }
+        
+        // Make functions available
+        window.updateOrderSummary = updateOrderSummary;
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyShop - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-cart"></i> MyShop
+            </a>
+            
+            <div class="nav-menu">
+                <a href="index.html" class="active">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="products.html">
+                    <i class="fas fa-store"></i> Products
+                </a>
+                <a href="cart.html">
+                    <i class="fas fa-shopping-bag"></i> Cart 
+                    <span class="cart-badge" id="cart-count">0</span>
+                </a>
+                <a href="login.html">
+                    <i class="fas fa-user"></i> Login
+                </a>
+            </div>
+            
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>Welcome to MyShop</h1>
+            <p class="subtitle">Your one-stop destination for online shopping</p>
+            <a href="products.html" class="btn btn-primary">
+                <i class="fas fa-shopping-bag"></i> Shop Now
+            </a>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose MyShop?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Free Shipping</h3>
+                    <p>On orders over $50</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Payment</h3>
+                    <p>100% secure transactions</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Dedicated customer service</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <h3>Easy Returns</h3>
+                    <p>30-day return policy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="products-grid" id="featured-products">
+                <!-- Products loaded by JavaScript -->
+            </div>
+            <div class="text-center">
+                <a href="products.html" class="btn btn-secondary">
+                    View All Products <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-shopping-cart"></i> MyShop</h3>
+                    <p>Your trusted online shopping partner since 2024</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html">Cart</a>
+                    <a href="login.html">Login</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@myshop.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MyShop. All rights reserved. | Made with <i class="fas fa-heart"></i> by Student</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Load featured products on homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFeaturedProducts();
+        });
+        
+        function loadFeaturedProducts() {
+            const container = document.getElementById('featured-products');
+            const products = [
+                {
+                    id: 1,
+                    name: "Wireless Headphones",
+                    price: 49.99,
+                    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop",
+                    category: "Electronics"
+                },
+                {
+                    id: 2,
+                    name: "Smart Watch",
+                    price: 89.99,
+                    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop",
+                    category: "Electronics"
+                },
+                {
+                    id: 3,
+                    name: "Laptop Backpack",
+                    price: 29.99,
+                    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop",
+                    category: "Accessories"
+                },
+                {
+                    id: 4,
+                    name: "Bluetooth Speaker",
+                    price: 39.99,
+                    image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300&h=200&fit=crop",
+                    category: "Electronics"
+                }
+            ];
+            
+            container.innerHTML = '';
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${product.category}</span>
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">$${product.price}</div>
+                        <button class="btn-add-cart" onclick="addToCart(${product.id}, '${product.name}', ${product.price})">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+    </script>
+</body>
+</html>
